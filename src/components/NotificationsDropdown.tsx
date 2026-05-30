@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Bell, Megaphone, Calendar, BookOpen, Heart, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
