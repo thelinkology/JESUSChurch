@@ -11,12 +11,14 @@ export default defineConfig({
     },
   },
   build: {
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
           supabase: ['@supabase/supabase-js'],
+          motion: ['motion/react'],
+          icons: ['lucide-react'],
         },
       },
     },

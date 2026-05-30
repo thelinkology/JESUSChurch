@@ -50,10 +50,14 @@ export const register = async (
   fullName: string,
   password: string
 ): Promise<{ user: UserProfile | null; error: string | null }> => {
+  const siteUrl = import.meta.env.VITE_SITE_URL || window.location.origin;
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { full_name: fullName } },
+    options: {
+      data: { full_name: fullName },
+      emailRedirectTo: `${siteUrl}/auth/callback`,
+    },
   });
   if (error) return { user: null, error: error.message };
   if (!data.user) return { user: null, error: 'Registration failed. Please try again.' };
