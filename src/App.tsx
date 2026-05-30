@@ -24,6 +24,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
+import { AuthCallback } from './pages/auth/AuthCallback';
 import { Profile } from './pages/Profile';
 import { Dashboard } from './pages/admin/Dashboard';
 import { ContentAdmin } from './pages/admin/ContentAdmin';
@@ -50,6 +51,7 @@ export default function App() {
               <Route path="volunteer" element={<Volunteer />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
+              <Route path="auth/callback" element={<AuthCallback />} />
               <Route path="profile" element={<Profile />} />
               <Route path="admin" element={<Dashboard />} />
               <Route path="admin/themes" element={<ThemeBuilder />} />

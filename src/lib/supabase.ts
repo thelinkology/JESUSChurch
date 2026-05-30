@@ -59,10 +59,14 @@ export const publicSupabase = createClient(
 );
 
 /** Sign in with Google (Gmail OAuth — must be enabled in Supabase Auth dashboard) */
-export const signInWithGoogle = () =>
-  supabase.auth.signInWithOAuth({
+export const signInWithGoogle = () => {
+  // Use VITE_SITE_URL if set (Vercel env var) so the OAuth redirect always
+  // goes to the correct production domain, not localhost.
+  const siteUrl = import.meta.env.VITE_SITE_URL || window.location.origin;
+  return supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${window.location.origin}/`,
+      redirectTo: `${siteUrl}/auth/callback`,
     },
   });
+};
