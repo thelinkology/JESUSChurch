@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-church-cream: var(--theme-bg);
+  --color-church-surface: var(--theme-surface);
+  --color-church-gold: var(--theme-primary);
+  --color-church-gold-dark: var(--theme-primary-dark);
+  --color-church-gold-light: var(--theme-primary-light);
+  --color-church-earth: var(--theme-secondary);
+  --color-church-earth-light: var(--theme-muted);
+  --color-church-earth-dark: var(--theme-text);
+  
+  --font-sans: var(--theme-font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--theme-font-serif), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+:root {
+  --theme-bg: #FDFBF7;
+  --theme-surface: #FFFFFF;
+  --theme-primary: #C5A059;
+  --theme-primary-dark: #A38040;
+  --theme-primary-light: #DBC18D;
+  --theme-secondary: #4A4036;
+  --theme-muted: #7A6F64;
+  --theme-text: #2D2620;
+  --theme-font-sans: "Inter";
+  --theme-font-serif: "Playfair Display";
+  --theme-btn-radius: 9999px;
+  --theme-anim-duration: 0.3s;
+  --theme-bg-image: none;
+  --theme-btn-shadow: none;
+}
+
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  background-image: var(--theme-bg-image);
+  background-attachment: fixed;
+  background-size: cover;
+  transition: background-color 0.5s ease, color 0.5s ease, background-image 0.5s ease;
+}
+
+* {
+  transition-duration: var(--theme-anim-duration);
+}
+
+@layer utilities {
+  .btn-theme {
+    border-radius: var(--theme-btn-radius) !important;
+    box-shadow: var(--theme-btn-shadow) !important;
+  }
+}
+

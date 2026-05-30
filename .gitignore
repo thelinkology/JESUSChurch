@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Test coverage
+coverage/
+
+# Environment — NEVER commit real credentials
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.log
+*.local
+.vscode/settings.json
+
+# MCP / IDE config (contains project-specific tokens)
+.mcp.json
+
+# Development-only DB migration scripts (run manually, not deployed)
+scripts/
+
+# Local assets (large files — add to CDN / Supabase Storage instead)
+Assets/
