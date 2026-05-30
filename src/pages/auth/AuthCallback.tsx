@@ -4,29 +4,28 @@ import { supabase } from '../../lib/supabase';
 
 /**
  * Handles the OAuth redirect from Supabase / Google.
- * Supabase appends the session tokens as a hash fragment to this URL.
- * The Supabase client picks them up via detectSessionInUrl, then we redirect home.
+ *
+ * Supabase's _initialize() calls _saveSession() BEFORE firing the SIGNED_IN
+ * event (via setTimeout). So by the time this component mounts and getSession()
+ * resolves (after initializePromise), the session is reliably in localStorage.
+ *
+ * We intentionally do NOT register an onAuthStateChange listener here because
+ * AuthContext already has one. Two competing SIGNED_IN handlers racing to call
+ * getUserProfile() and then setUser() was the root cause of the logout-on-refresh bug.
  */
 export function AuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Supabase automatically processes the hash tokens on client load.
-    // Listen for the session to be established, then navigate home.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_IN') {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
         navigate('/', { replace: true });
-      } else if (event === 'SIGNED_OUT') {
+      } else {
         navigate('/login', { replace: true });
       }
+    }).catch(() => {
+      navigate('/login', { replace: true });
     });
-
-    // Fallback: if already signed in or no event fires within 5 s, go home.
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate('/', { replace: true });
-    });
-
-    return () => subscription.unsubscribe();
   }, [navigate]);
 
   return (
@@ -38,3 +37,4 @@ export function AuthCallback() {
     </div>
   );
 }
+

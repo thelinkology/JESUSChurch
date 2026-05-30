@@ -82,12 +82,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      // SIGNED_IN or USER_UPDATED — load/refresh profile
+      // SIGNED_IN or USER_UPDATED — load/refresh profile.
+      // IMPORTANT: use functional setUser so we never overwrite an already-set
+      // user with null. The getSession() call above may have already set the user
+      // (race: both paths call getUserProfile in parallel on OAuth redirect).
+      // If getUserProfile fails, fall back to session metadata — never log the
+      // user out when their session is valid.
+      const sessionFallback = {
+        id: session.user.id,
+        email: session.user.email ?? '',
+        full_name:
+          (session.user.user_metadata?.full_name as string | undefined) ??
+          session.user.email?.split('@')[0] ??
+          'User',
+        role: 'Member' as const,
+      };
       try {
         const profile = await getUserProfile(session.user.id);
-        if (mounted) { setUser(profile); setLoading(false); }
+        if (mounted) {
+          // If profile is null (DB error / RLS), keep existing user or use fallback.
+          setUser(prev => profile ?? prev ?? sessionFallback);
+          setLoading(false);
+        }
       } catch {
-        if (mounted) { setUser(null); setLoading(false); }
+        // Network / timeout error — keep existing user or use fallback, never null.
+        if (mounted) {
+          setUser(prev => prev ?? sessionFallback);
+          setLoading(false);
+        }
       }
     });
 
