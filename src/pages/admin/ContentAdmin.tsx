@@ -200,6 +200,26 @@ export function ContentAdmin() {
       await updateChurchSettings(settings as ChurchSettings);
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      console.error('Save settings error:', err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSaveLiveSettings = async () => {
+    setSaving(true);
+    try {
+      await Promise.all([
+        updateChurchSetting('live_title', settings.live_title ?? ''),
+        updateChurchSetting('live_description', settings.live_description ?? ''),
+        updateChurchSetting('live_youtube_url', settings.live_youtube_url ?? ''),
+        updateChurchSetting('live_facebook_url', settings.live_facebook_url ?? ''),
+      ]);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      console.error('Save live settings error:', err);
     } finally {
       setSaving(false);
     }
@@ -832,7 +852,7 @@ export function ContentAdmin() {
 
                 <div className="mt-4 flex justify-end">
                   <button
-                    onClick={handleSaveSettings}
+                    onClick={handleSaveLiveSettings}
                     disabled={saving}
                     className="bg-church-gold hover:bg-church-gold-dark text-white px-8 py-3 rounded-xl font-medium flex items-center gap-2 transition-colors shadow-sm"
                   >

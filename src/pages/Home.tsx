@@ -76,7 +76,7 @@ export function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[70vh] md:h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img
@@ -99,7 +99,7 @@ export function Home() {
             <span className="text-church-gold font-medium tracking-wider uppercase text-sm md:text-base">
               Welcome Home
             </span>
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
+            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight">
               {heroTitle}
             </h1>
             <p className="text-lg md:text-xl text-church-cream/90 max-w-2xl mx-auto font-light leading-relaxed">
@@ -129,7 +129,7 @@ export function Home() {
       </section>
 
       {/* Service Times & Location */}
-      <section className="bg-church-cream  py-20 relative z-20 -mt-10 rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+      <section className="bg-church-cream py-20 relative z-20 rounded-t-[3rem] md:-mt-10 md:shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {serviceTimesDisplay && (
