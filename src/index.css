@@ -32,14 +32,8 @@
   --theme-btn-shadow: none;
 }
 
-html {
-  overflow-x: clip;
-}
-
 body {
   overflow-x: hidden;
-  /* Prevent pull-to-refresh on mobile (Android Chrome, modern iOS Safari) */
-  overscroll-behavior-y: contain;
   background-color: var(--theme-bg);
   color: var(--theme-text);
   background-image: var(--theme-bg-image);
@@ -50,6 +44,13 @@ body {
 
 * {
   transition-duration: var(--theme-anim-duration);
+}
+
+/* Prevent pull-to-refresh on touch devices only */
+@media (pointer: coarse) {
+  body {
+    overscroll-behavior-y: contain;
+  }
 }
 
 @layer utilities {

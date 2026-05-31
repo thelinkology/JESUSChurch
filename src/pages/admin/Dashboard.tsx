@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useAuth } from '../../contexts/AuthContext';
 import { getAllProfiles, updateUserRole, UserProfile, UserRole } from '../../lib/authStore';
-import { Shield, User, Users, Calendar, Video, Palette, Heart, DollarSign, FileText, Loader2, Church, BookOpen } from 'lucide-react';
+import { Shield, User, Users, Calendar, Video, Palette, Heart, DollarSign, FileText, Loader2, Church, BookOpen, Award } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export function Dashboard() {
@@ -164,6 +164,65 @@ export function Dashboard() {
                 <p className="text-sm text-church-earth-light">Manage daily readings</p>
               </div>
             </Link>          </div>
+
+          {/* Badges Reference Guide */}
+          <div className="bg-church-surface rounded-3xl shadow-sm border border-church-earth/5 overflow-hidden mb-8">
+            <div className="p-6 border-b border-church-earth/10 bg-church-cream/30">
+              <h2 className="font-serif text-2xl font-bold text-church-earth-dark flex items-center gap-2">
+                <Award className="w-6 h-6 text-church-gold" />
+                Member Badges Guide
+              </h2>
+              <p className="text-sm text-church-earth-light mt-1">Badges earned automatically by members based on activity</p>
+            </div>
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Devotional Badges */}
+              <div>
+                <h3 className="font-semibold text-church-earth-dark mb-3 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-church-gold" />
+                  Devotional Streak Badges
+                </h3>
+                <div className="space-y-2">
+                  {[
+                    { label: 'Beginner', threshold: '0 days', color: 'bg-gray-100 text-gray-600' },
+                    { label: 'Seeker', threshold: '7+ days', color: 'bg-green-100 text-green-700' },
+                    { label: 'Faithful', threshold: '30+ days', color: 'bg-amber-100 text-amber-700' },
+                    { label: 'Devoted', threshold: '90+ days', color: 'bg-blue-100 text-blue-700' },
+                    { label: 'Pilgrim', threshold: '365+ days', color: 'bg-purple-100 text-purple-700' },
+                  ].map(b => (
+                    <div key={b.label} className="flex items-center justify-between py-1.5 border-b border-church-earth/5 last:border-0">
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${b.color}`}>
+                        <Award className="w-3 h-3" />{b.label}
+                      </span>
+                      <span className="text-sm text-church-earth-light">{b.threshold} completed</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Giving Badges */}
+              <div>
+                <h3 className="font-semibold text-church-earth-dark mb-3 flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 text-church-gold" />
+                  Giving Badges (Cumulative)
+                </h3>
+                <div className="space-y-2">
+                  {[
+                    { label: 'Cheerful Giver', threshold: '₱500+', color: 'bg-red-100 text-red-600' },
+                    { label: 'Generous Heart', threshold: '₱2,500+', color: 'bg-orange-100 text-orange-700' },
+                    { label: 'Kingdom Builder', threshold: '₱10,000+', color: 'bg-amber-100 text-amber-700' },
+                    { label: 'Faithful Steward', threshold: '₱50,000+', color: 'bg-yellow-100 text-yellow-700' },
+                  ].map(b => (
+                    <div key={b.label} className="flex items-center justify-between py-1.5 border-b border-church-earth/5 last:border-0">
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${b.color}`}>
+                        <Award className="w-3 h-3" />{b.label}
+                      </span>
+                      <span className="text-sm text-church-earth-light">{b.threshold} total given</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-church-earth-light mt-3 italic">Giving badges do not appear below ₱500 total.</p>
+              </div>
+            </div>
+          </div>
 
           {isAdmin && (
             <div className="bg-church-surface rounded-3xl shadow-sm border border-church-earth/5 overflow-hidden">

@@ -89,7 +89,7 @@ export function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-church-earth-dark/90 via-transparent to-transparent" />
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 md:px-6 text-center text-church-cream">
+        <div className="relative z-10 container mx-auto px-4 md:px-6 text-center text-church-cream pt-20 md:pt-0">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -99,7 +99,7 @@ export function Home() {
             <span className="text-church-gold font-medium tracking-wider uppercase text-sm md:text-base">
               Welcome Home
             </span>
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
+            <h1 className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
               {heroTitle}
             </h1>
             <p className="text-lg md:text-xl text-church-cream/90 max-w-2xl mx-auto font-light leading-relaxed">
