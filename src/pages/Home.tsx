@@ -99,13 +99,13 @@ export function Home() {
             <span className="text-church-gold font-medium tracking-wider uppercase text-sm md:text-base">
               Welcome Home
             </span>
-            <h1 className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
               {heroTitle}
             </h1>
             <p className="text-lg md:text-xl text-church-cream/90 max-w-2xl mx-auto font-light leading-relaxed">
               {heroSubtitle}
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 pb-16 md:pb-0">
               <a
                 href="#locations"
                 onClick={(e) => {
