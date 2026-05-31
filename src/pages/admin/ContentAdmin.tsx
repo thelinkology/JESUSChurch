@@ -18,14 +18,14 @@ import { getSermons, Sermon } from '../../lib/sermonsStore';
 import { uploadImage } from '../../lib/storageUtils';
 import { getLocations, addLocation, updateLocation, deleteLocation, ChurchLocation } from '../../lib/locationsStore';
 import {
-  FileText, Users, Bell, Save, Plus, Trash2, Edit2, Loader2, Check, Image, MapPin, Upload, X, Target,
+  FileText, Users, Bell, Save, Plus, Trash2, Edit2, Loader2, Check, Image, MapPin, Upload, X, Target, Video,
 } from 'lucide-react';
 import {
   Ministry, getMinistries, addMinistry, updateMinistry, deleteMinistry, parseGoals, serializeGoals,
 } from '../../lib/ministriesStore';
 
 
-type Tab = 'church' | 'story' | 'hero' | 'leadership' | 'locations' | 'ministries' | 'notifications';
+type Tab = 'church' | 'story' | 'hero' | 'leadership' | 'locations' | 'ministries' | 'live' | 'notifications';
 
 const inputCls = 'w-full px-4 py-2.5 rounded-lg border border-church-earth/20 focus:outline-none focus:ring-2 focus:ring-church-gold/50 bg-church-cream/30 text-church-earth-dark text-sm';
 const labelCls = 'block text-sm font-medium text-church-earth-dark mb-1';
@@ -268,6 +268,7 @@ export function ContentAdmin() {
     { id: 'leadership', label: 'Leadership', icon: <Users className="w-4 h-4" /> },
     { id: 'locations', label: 'Locations', icon: <MapPin className="w-4 h-4" /> },
     { id: 'ministries', label: 'Ministries', icon: <Target className="w-4 h-4" /> },
+    { id: 'live', label: 'Live Stream', icon: <Video className="w-4 h-4" /> },
     { id: 'notifications', label: 'Notifications', icon: <Bell className="w-4 h-4" /> },
   ];
 
@@ -767,6 +768,77 @@ export function ContentAdmin() {
                   {ministries.length === 0 && (
                     <p className="text-church-earth-light text-sm col-span-2 text-center py-8">No ministries yet. Click "Add Ministry" to create one.</p>
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* Live Stream */}
+            {activeTab === 'live' && (
+              <div className="bg-white rounded-2xl p-8 shadow-sm border border-church-earth/10 space-y-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center">
+                    <Video className="w-5 h-5 text-red-500" />
+                  </div>
+                  <div>
+                    <h2 className="font-bold text-xl text-church-earth-dark">Live Stream Settings</h2>
+                    <p className="text-church-earth-light text-sm">Set the YouTube or Facebook link that plays on the Watch Live page.</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-5">
+                  <div>
+                    <label className={labelCls}>Live Stream Title</label>
+                    <input
+                      type="text"
+                      className={inputCls}
+                      value={settings.live_title || ''}
+                      onChange={e => setSettings({ ...settings, live_title: e.target.value })}
+                      placeholder="e.g., Sunday Service Live"
+                    />
+                  </div>
+                  <div>
+                    <label className={labelCls}>Description</label>
+                    <input
+                      type="text"
+                      className={inputCls}
+                      value={settings.live_description || ''}
+                      onChange={e => setSettings({ ...settings, live_description: e.target.value })}
+                      placeholder="e.g., Join us as we worship and hear the Word of God together."
+                    />
+                  </div>
+                  <div>
+                    <label className={labelCls}>YouTube URL</label>
+                    <input
+                      type="url"
+                      className={inputCls}
+                      value={settings.live_youtube_url || ''}
+                      onChange={e => setSettings({ ...settings, live_youtube_url: e.target.value })}
+                      placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
+                    />
+                    <p className="text-xs text-church-earth-light mt-1">Supports youtube.com/watch, youtu.be, youtube.com/live, and channel live stream URLs.</p>
+                  </div>
+                  <div>
+                    <label className={labelCls}>Facebook Live URL</label>
+                    <input
+                      type="url"
+                      className={inputCls}
+                      value={settings.live_facebook_url || ''}
+                      onChange={e => setSettings({ ...settings, live_facebook_url: e.target.value })}
+                      placeholder="https://www.facebook.com/yourpage/videos/..."
+                    />
+                    <p className="text-xs text-church-earth-light mt-1">Paste the full Facebook video/live URL. YouTube takes priority if both are set.</p>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex justify-end">
+                  <button
+                    onClick={handleSaveSettings}
+                    disabled={saving}
+                    className="bg-church-gold hover:bg-church-gold-dark text-white px-8 py-3 rounded-xl font-medium flex items-center gap-2 transition-colors shadow-sm"
+                  >
+                    {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
+                    {saved ? 'Saved!' : 'Save Live Settings'}
+                  </button>
                 </div>
               </div>
             )}

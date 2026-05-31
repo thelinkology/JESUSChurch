@@ -1,7 +1,7 @@
 import { supabase } from './supabase';
 
 export type GivingCategory = 'Tithes' | 'Offering' | 'Missions';
-export type PaymentMethod = 'GCash' | 'PayPal' | 'Cash/Check';
+export type PaymentMethod = 'GCash' | 'BPI' | 'PayPal' | 'Cash/Check';
 export type GivingStatus = 'pending' | 'completed' | 'failed';
 
 export interface GivingTransaction {

@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useAuth } from '../../contexts/AuthContext';
 import { getAllProfiles, updateUserRole, UserProfile, UserRole } from '../../lib/authStore';
-import { Shield, User, Users, Calendar, Video, Palette, Heart, DollarSign, FileText, Loader2, Church } from 'lucide-react';
+import { Shield, User, Users, Calendar, Video, Palette, Heart, DollarSign, FileText, Loader2, Church, BookOpen } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export function Dashboard() {
   const { user, isAdmin, isLeader, loading: authLoading } = useAuth();
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userSearch, setUserSearch] = useState('');
+  const [roleFilter, setRoleFilter] = useState<string>('all');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,6 +32,13 @@ export function Dashboard() {
       setLoading(false);
     }
   };
+
+  const filteredUsers = users.filter(u => {
+    const q = userSearch.toLowerCase();
+    const matchSearch = !q || u.full_name.toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q);
+    const matchRole = roleFilter === 'all' || u.role === roleFilter;
+    return matchSearch && matchRole;
+  });
 
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
     if (!isAdmin) return; // Only admins can change roles
@@ -146,23 +155,52 @@ export function Dashboard() {
                 <h3 className="font-bold text-church-earth-dark">Content & Settings</h3>
                 <p className="text-sm text-church-earth-light">Vision, mission, leadership</p>
               </div>
-            </Link>
-          </div>
+            </Link>            <Link to="/admin/devotionals" className="bg-church-surface p-6 rounded-2xl shadow-sm border border-church-earth/5 hover:shadow-md transition-shadow flex items-center gap-4 group">
+              <div className="w-12 h-12 bg-church-gold/10 rounded-xl flex items-center justify-center text-church-gold group-hover:scale-110 transition-transform">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-church-earth-dark">Devotionals</h3>
+                <p className="text-sm text-church-earth-light">Manage daily readings</p>
+              </div>
+            </Link>          </div>
 
           {isAdmin && (
             <div className="bg-church-surface rounded-3xl shadow-sm border border-church-earth/5 overflow-hidden">
-              <div className="p-6 border-b border-church-earth/10 flex justify-between items-center bg-church-cream/30">
-                <h2 className="font-serif text-2xl font-bold text-church-earth-dark flex items-center gap-2">
-                  <Users className="w-6 h-6 text-church-gold" />
-                  User Management
-                </h2>
+              <div className="p-6 border-b border-church-earth/10 bg-church-cream/30">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <h2 className="font-serif text-2xl font-bold text-church-earth-dark flex items-center gap-2">
+                    <Users className="w-6 h-6 text-church-gold" />
+                    User Management
+                  </h2>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <input
+                      type="text"
+                      placeholder="Search by name or email…"
+                      value={userSearch}
+                      onChange={e => setUserSearch(e.target.value)}
+                      className="px-4 py-2 rounded-xl border border-church-earth/20 bg-church-surface text-church-earth-dark text-sm focus:outline-none focus:ring-2 focus:ring-church-gold/50 w-full sm:w-60"
+                    />
+                    <select
+                      value={roleFilter}
+                      onChange={e => setRoleFilter(e.target.value)}
+                      className="px-4 py-2 rounded-xl border border-church-earth/20 bg-church-surface text-church-earth-dark text-sm focus:outline-none focus:ring-2 focus:ring-church-gold/50"
+                    >
+                      <option value="all">All Roles</option>
+                      <option value="Visitor">Visitor</option>
+                      <option value="Member">Member</option>
+                      <option value="Leader">Leader</option>
+                      <option value="Admin">Admin</option>
+                    </select>
+                  </div>
+                </div>
               </div>
               
               <div className="p-6 overflow-x-auto">
                 {loading ? (
                   <div className="text-center py-8 text-church-earth-light">Loading users...</div>
                 ) : (
-                  <table className="w-full text-left border-collapse min-w-[600px]">
+                    <table className="w-full text-left border-collapse min-w-[600px]">
                     <thead>
                       <tr className="border-b border-church-earth/10 text-church-earth-light text-sm uppercase tracking-wider">
                         <th className="pb-4 font-medium">User</th>
@@ -172,7 +210,7 @@ export function Dashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {users.map(u => (
+                      {filteredUsers.map(u => (
                         <tr key={u.id} className="border-b border-church-earth/5 last:border-0 hover:bg-church-cream/20 transition-colors">
                           <td className="py-4 flex items-center gap-3">
                             <div className="w-8 h-8 bg-church-earth/10 rounded-full flex items-center justify-center text-church-earth-dark">

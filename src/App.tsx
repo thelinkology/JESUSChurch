@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { Layout } from './components/layout/Layout';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
@@ -28,6 +29,7 @@ import { AuthCallback } from './pages/auth/AuthCallback';
 import { Profile } from './pages/Profile';
 import { Dashboard } from './pages/admin/Dashboard';
 import { ContentAdmin } from './pages/admin/ContentAdmin';
+import { DevotionalsAdmin } from './pages/admin/DevotionalsAdmin';
 
 export default function App() {
   return (
@@ -62,10 +64,12 @@ export default function App() {
               <Route path="admin/groups" element={<GroupsAdmin />} />
               <Route path="admin/volunteer" element={<VolunteerAdmin />} />
               <Route path="admin/content" element={<ContentAdmin />} />
+              <Route path="admin/devotionals" element={<DevotionalsAdmin />} />
             </Route>
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
+      <Analytics />
     </AuthProvider>
   );
 }

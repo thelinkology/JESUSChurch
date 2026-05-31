@@ -29,7 +29,10 @@ export function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    // passive: true tells the browser this handler won't call preventDefault(),
+    // so it can start scrolling immediately without waiting for JS — key for
+    // smooth mobile scrolling performance.
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

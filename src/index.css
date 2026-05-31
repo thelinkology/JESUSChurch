@@ -32,7 +32,14 @@
   --theme-btn-shadow: none;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
+  overflow-x: hidden;
+  /* Prevent pull-to-refresh on mobile (Android Chrome, modern iOS Safari) */
+  overscroll-behavior-y: contain;
   background-color: var(--theme-bg);
   color: var(--theme-text);
   background-image: var(--theme-bg-image);

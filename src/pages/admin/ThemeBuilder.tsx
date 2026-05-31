@@ -33,11 +33,8 @@ export function ThemeBuilder() {
   };
 
   const handleSave = async () => {
-    const newTheme = {
-      ...editingTheme,
-      id: editingTheme.id.startsWith('custom-') ? editingTheme.id : `custom-${Date.now()}`,
-      name: editingTheme.name.includes('(Custom)') ? editingTheme.name : `${editingTheme.name} (Custom)`
-    };
+    const id = editingTheme.id.startsWith('custom-') ? editingTheme.id : `custom-${Date.now()}`;
+    const newTheme = { ...editingTheme, id };
     await saveCustomTheme(newTheme);
   };
 
@@ -98,10 +95,19 @@ export function ThemeBuilder() {
           <div className="lg:w-3/4 space-y-8">
             <div className="bg-church-surface border border-church-earth/10 p-8 rounded-2xl shadow-sm">
               <div className="flex justify-between items-center mb-8">
-                <h2 className="font-serif text-3xl font-semibold text-church-earth-dark">Theme Builder</h2>
-                <button 
+                <div className="flex-1 mr-6">
+                  <label className="block text-sm text-church-earth-light mb-1">Theme Name</label>
+                  <input
+                    type="text"
+                    value={editingTheme.name}
+                    onChange={e => setEditingTheme(prev => ({ ...prev, name: e.target.value }))}
+                    className="w-full px-4 py-2 rounded-lg border border-church-earth/20 bg-church-cream text-church-earth-dark font-serif text-xl font-semibold focus:outline-none focus:ring-2 focus:ring-church-gold/50"
+                    placeholder="Theme name"
+                  />
+                </div>
+                <button
                   onClick={handleSave}
-                  className="bg-church-gold hover:bg-church-gold-dark text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2"
+                  className="bg-church-gold hover:bg-church-gold-dark text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0"
                 >
                   <Save className="w-4 h-4" /> Save Theme
                 </button>

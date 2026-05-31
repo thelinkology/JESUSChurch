@@ -99,6 +99,27 @@ export const updateApplicationStatus = async (
   if (error) throw error;
 };
 
+export interface VolunteerApplicationWithRole extends VolunteerApplication {
+  role_title?: string;
+  role_department?: string;
+}
+
+export const getUserVolunteerApplications = async (
+  userId: string
+): Promise<VolunteerApplicationWithRole[]> => {
+  const { data, error } = await supabase
+    .from('volunteer_applications')
+    .select('*, volunteer_roles(title, department)')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+  if (error) { console.error('getUserVolunteerApplications:', error.message); return []; }
+  return (data ?? []).map((row: any) => ({
+    ...row,
+    role_title: row.volunteer_roles?.title,
+    role_department: row.volunteer_roles?.department,
+  }));
+};
+
 export const getUserApplicationRoleIds = async (userId: string): Promise<string[]> => {
   const { data, error } = await supabase
     .from('volunteer_applications')

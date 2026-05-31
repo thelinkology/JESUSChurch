@@ -29,6 +29,18 @@ export interface ChurchSettings {
   hero_image_url?: string;
   featured_sermon_id?: string;
   featured_group_ids?: string;
+  // Giving / payment settings
+  gcash_number?: string;
+  gcash_qr_url?: string;
+  bpi_account_name?: string;
+  bpi_account_number?: string;
+  bpi_qr_url?: string;
+  paypal_email?: string;
+  // Live stream settings
+  live_youtube_url?: string;
+  live_facebook_url?: string;
+  live_title?: string;
+  live_description?: string;
 }
 
 export interface LeadershipMember {

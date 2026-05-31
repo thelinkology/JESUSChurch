@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Vertical beam of cross -->
+  <rect x="42" y="8" width="16" height="70" rx="5" fill="#C9A84C"/>
+  <!-- Horizontal beam of cross -->
+  <rect x="18" y="26" width="64" height="16" rx="5" fill="#C9A84C"/>
+  <!-- Base pedestal -->
+  <rect x="36" y="76" width="28" height="10" rx="4" fill="#C9A84C"/>
+  <rect x="28" y="84" width="44" height="8" rx="4" fill="#C9A84C"/>
+</svg>

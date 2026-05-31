@@ -76,13 +76,13 @@ export function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative h-[70vh] md:h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img
             src={heroImageUrl}
             alt="Church interior"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-[center_30%] md:object-center"
             referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-church-earth-dark/60 mix-blend-multiply" />
@@ -106,12 +106,16 @@ export function Home() {
               {heroSubtitle}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
-              <Link
-                to="/about"
-                className="w-full sm:w-auto bg-church-gold hover:bg-church-gold-dark text-white px-8 py-4 btn-theme font-medium transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg"
+              <a
+                href="#locations"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('locations')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="w-full sm:w-auto bg-church-gold hover:bg-church-gold-dark text-white px-8 py-4 btn-theme font-medium transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg text-center cursor-pointer"
               >
                 {heroCta}
-              </Link>
+              </a>
               <Link
                 to="/live"
                 className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-4 btn-theme font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg"
@@ -357,7 +361,7 @@ export function Home() {
 
       {/* Church Locations */}
       {locations.length > 0 ? (
-        <section className="py-24 bg-church-cream ">
+        <section id="locations" className="py-24 bg-church-cream ">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <span className="text-church-gold font-medium tracking-wider uppercase text-sm">Find Us</span>

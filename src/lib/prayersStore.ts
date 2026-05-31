@@ -94,3 +94,21 @@ export const deletePrayerComment = async (id: string): Promise<void> => {
   if (error) throw error;
 };
 
+/**
+ * Fetch comment counts for a list of prayer IDs in one query.
+ * Returns a map of prayer_id → count.
+ */
+export const getPrayerCommentCounts = async (prayerIds: string[]): Promise<Record<string, number>> => {
+  if (!prayerIds.length) return {};
+  const { data, error } = await publicSupabase
+    .from('prayer_comments')
+    .select('prayer_id')
+    .in('prayer_id', prayerIds);
+  if (error) { console.error('getPrayerCommentCounts:', error.message); return {}; }
+  const counts: Record<string, number> = {};
+  for (const row of data ?? []) {
+    counts[row.prayer_id] = (counts[row.prayer_id] ?? 0) + 1;
+  }
+  return counts;
+};
+

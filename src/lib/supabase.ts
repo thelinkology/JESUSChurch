@@ -14,7 +14,21 @@ if (!supabaseUrl || !supabaseKey) {
 // Without this, Supabase's autoRefreshToken can queue ALL in-flight queries
 // while it refreshes the JWT — if the refresh hangs (slow network after tab
 // restore), every data query hangs forever and pages get stuck on the skeleton.
+//
+// Auth requests (token refresh, sign-in, etc.) are intentionally exempt:
+// applying the same 12s cap to the token-refresh call causes Supabase to fire
+// SIGNED_OUT when the network is slow (e.g. a desktop tab idle in the
+// background) — which logs the user out even though their session is valid.
 const fetchWithTimeout: typeof fetch = (input, init) => {
+  const url = typeof input === 'string' ? input
+    : input instanceof URL ? input.href
+    : (input as Request).url;
+
+  // Let auth requests run to completion — they should never be aborted.
+  if (url.includes('/auth/v1/')) {
+    return fetch(input, init);
+  }
+
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12_000);
   return fetch(input, { ...init, signal: controller.signal })

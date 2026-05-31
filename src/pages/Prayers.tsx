@@ -1,11 +1,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Heart, Send, Lock, Globe, CheckCircle2, MessageCircle, Trash2 } from 'lucide-react';
 import {
   PrayerRequest, getPrayers, addPrayer, incrementPrayerCount,
   PrayerComment, getPrayerComments, addPrayerComment, deletePrayerComment,
+  getPrayerCommentCounts,
 } from '../lib/prayersStore';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -18,6 +19,7 @@ export function Prayers() {
 
   // Comments
   const [comments, setComments] = useState<Record<string, PrayerComment[]>>({});
+  const [commentCounts, setCommentCounts] = useState<Record<string, number>>({});
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   const [loadingComments, setLoadingComments] = useState<Set<string>>(new Set());
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
@@ -43,6 +45,10 @@ export function Prayers() {
     setLoading(true);
     const data = await getPrayers(true, true); // Public and approved only
     setPrayers(data);
+    if (data.length) {
+      const counts = await getPrayerCommentCounts(data.map(p => p.id));
+      setCommentCounts(counts);
+    }
     setLoading(false);
   };
 
@@ -90,6 +96,8 @@ export function Prayers() {
     setLoadingComments(prev => new Set(prev).add(id));
     const data = await getPrayerComments(id);
     setComments(prev => ({ ...prev, [id]: data }));
+    // Sync count with actual loaded data
+    setCommentCounts(prev => ({ ...prev, [id]: data.length }));
     setLoadingComments(prev => { const s = new Set(prev); s.delete(id); return s; });
   };
 
@@ -106,6 +114,7 @@ export function Prayers() {
         content: text,
       });
       setComments(prev => ({ ...prev, [prayerId]: [...(prev[prayerId] ?? []), newComment] }));
+      setCommentCounts(prev => ({ ...prev, [prayerId]: (prev[prayerId] ?? 0) + 1 }));
       setCommentInputs(prev => ({ ...prev, [prayerId]: '' }));
     } catch (err) {
       console.error('Failed to add comment:', err);
@@ -118,6 +127,7 @@ export function Prayers() {
     try {
       await deletePrayerComment(commentId);
       setComments(prev => ({ ...prev, [prayerId]: (prev[prayerId] ?? []).filter(c => c.id !== commentId) }));
+      setCommentCounts(prev => ({ ...prev, [prayerId]: Math.max(0, (prev[prayerId] ?? 1) - 1) }));
     } catch (err) {
       console.error('Failed to delete comment:', err);
     }
@@ -245,7 +255,7 @@ export function Prayers() {
                           className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-colors bg-church-cream  text-church-earth  hover:bg-church-gold/10 hover:text-church-gold border border-church-earth/10 "
                         >
                           <MessageCircle className="w-4 h-4" />
-                          <span>{(comments[prayer.id] ?? []).length}</span>
+                          <span>{commentCounts[prayer.id] ?? 0}</span>
                         </button>
 
                         {/* Pray button */}
@@ -328,7 +338,7 @@ export function Prayers() {
                               </div>
                             ) : (
                               <p className="text-sm text-church-earth-light  text-center py-1">
-                                <button onClick={() => navigate('/login')} className="text-church-gold hover:underline font-medium">Sign in</button> to leave an encouraging comment.
+                                <Link to="/login" className="text-church-gold hover:underline font-medium">Sign in</Link> to leave an encouraging comment.
                               </p>
                             )}
                           </div>

@@ -10,6 +10,14 @@ export interface UserProfile {
   phone?: string;
   role: UserRole;
   created_at?: string;
+  birthdate?: string;
+  gender?: string;
+  civil_status?: string;
+  address?: string;
+  emergency_contact_name?: string;
+  emergency_contact_phone?: string;
+  occupation?: string;
+  workplace?: string;
 }
 
 /** Fetch a profile by user ID — does NOT re-call getSession(), safe to use inside auth event callbacks. */
@@ -86,7 +94,7 @@ export const logout = async (): Promise<void> => {
 
 export const updateProfile = async (
   userId: string,
-  updates: Partial<Pick<UserProfile, 'full_name' | 'avatar_url' | 'phone'>>
+  updates: Partial<Pick<UserProfile, 'full_name' | 'avatar_url' | 'phone' | 'birthdate' | 'gender' | 'civil_status' | 'address' | 'emergency_contact_name' | 'emergency_contact_phone' | 'occupation' | 'workplace'>>
 ): Promise<UserProfile | null> => {
   const { data, error } = await supabase
     .from('profiles')
